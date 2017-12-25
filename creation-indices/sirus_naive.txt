@@ -1,4 +1,4 @@
-# Création d'un index "sirus_naive", configuré a minima
+# Création d'un index "sirus_naive", configuré a minima (sans mapping)
 # Base : https://www.elastic.co/guide/en/elasticsearch/reference/6.1/analysis-lang-analyzer.html
 # et https://www.elastic.co/guide/en/elasticsearch/reference/6.1/analysis-custom-analyzer.html
 PUT /sirus_naive?pretty
