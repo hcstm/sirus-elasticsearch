@@ -1,0 +1,5 @@
+# Vérification du bon chargement des données
+GET /sirus_naive/_search
+{
+  "query": { "match_all": {} }
+}

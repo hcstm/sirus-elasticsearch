@@ -1,0 +1,26 @@
+# Création d'un index "customer"
+PUT /customer?pretty
+
+# Indexation d'un document
+PUT /customer/doc/1?pretty
+{
+  "name": "John Doe"
+}
+
+# Récupération du document
+GET /customer/doc/1?pretty
+
+# Suppression d'un index
+DELETE /customer?pretty
+
+###############
+# HEALTHCHECK #
+###############
+# Infos sur le cluster
+GET /_cat/health?v
+
+# Infos sur les nodes
+GET /_cat/nodes?v
+
+# Liste des indices
+GET /_cat/indices?v

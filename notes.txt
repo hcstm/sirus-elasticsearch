@@ -1,0 +1,22 @@
+# Idée (sans doute hors champ hackathon) : update_by_query pour améliorer des données déjà indexées ?
+# Par exemple, on constitue une requête à partir d'une nouvelle entrée.
+# Cette requête permet idéalement d'identifier des documents proches dans l'index.
+# On pourrait donc modifier ces documents pour ajouter la nouvelle entrée comme
+# étant similaire.
+
+# Idée : combiner recherche sur un champ _all custom en ignorant l'ordre des mots,
+# et une recherche match_phrase ou similaire pour scorer davantage lorsque les termes
+# de la recherche se suivent dans le même ordre dans le document indexé.
+
+# Note mapping :
+#   - utiliser  ["norms": false] pour les champs ne servant qu'en filtres ou agrégats
+#   - utiliser ["index": false] pour ne pas indexer du tout certains champs (ils restent accessibles via _source)
+
+# Similarité : depuis peu, Elasticsearch est passé de TF/IDF à BM25.
+#   - Présentation des écarts : https://www.elastic.co/fr/elasticon/conf/2016/sf/improved-text-scoring-with-bm25
+#   ou encore http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/
+#   - Il existe aussi une similarité "boolean", qui vaut 1 (ou boost si présent) quand un document correspond à une requête, et 0 sinon.
+#     Devrait permettre un scoring minimal simple avec une bool query et des clauses should.
+
+# Article sur la recherche dans des champs "courts" (comme un titre, mais s'applique également pour nous)
+# http://opensourceconnections.com/blog/2014/12/08/title-search-when-relevancy-is-only-skin-deep/
