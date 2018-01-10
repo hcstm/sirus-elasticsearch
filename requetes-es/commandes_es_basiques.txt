@@ -7,7 +7,7 @@ PUT /customer/doc/1?pretty
   "name": "John Doe"
 }
 
-# Récupération du document
+# Récupération du document par son identifiant (!= requête)
 GET /customer/doc/1?pretty
 
 # Suppression d'un index

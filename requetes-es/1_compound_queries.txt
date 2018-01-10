@@ -1,0 +1,94 @@
+# Requêtes pour basées sur la bool query d'Elasticsearch, permettant d'utiliser plusieurs
+# sous requêtes, et donc de séparer les variables à exploiter.
+
+# Exemple 1 : OK
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "MAISON DE RETRAIT" } },
+        { "match" : { "localisation" : "59375 MARCHIENNES" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+
+# Exemple 2 : OK
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "IME" } },
+        { "match" : { "localisation" : "59192 EMERCHICOURT" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+
+# Exemple 3 : pas retrouvé (DEMECO n'apparaît nulle part dans l'index)
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "DEMECO" } },
+        { "match" : { "localisation" : "62249 COURCELLES LES-LENS" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+
+# Exemple 4 : pas retrouvé ("DENISART" n'est pas dans l'index ; "DENIZART" l'est, mais correspond à un autre établissement)
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "DENISART JEAN PHILIPPE" } },
+        { "match" : { "localisation" : "59387 MARQUETTE EN-OSTREVANT" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+
+# Exemple 5 : pas retrouvé
+# Idée : extraire le département du depcom au mapping, et ajouter un filtre
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "TEREOS" } },
+        { "match" : { "localisation" : "RUE D'ERES 59122 CAMBRAI" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+
+# Exemple 6 : retrouvé, mais avec une différence de score marginale par
+# rapport au second (sans aucun rapport)
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "YMERIS" } },
+        { "match" : { "localisation" : "RTE WAHAGNIES 59462 PHALEMPIN" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}

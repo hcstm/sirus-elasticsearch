@@ -1,0 +1,66 @@
+# Requêtes pour tester les six cas d'exemple après avoir consolidé les variables
+# d'intérêt dans un unique champ "description" (via option "copy_to" dans le mapping)
+# ==> dans la mesure où on peut distinguer a priori les informations collectées entre
+# raison sociale, localisation et activité, on aura de meilleurs résultats en passant
+# par des champs différents
+
+# Exemple 1 : OK
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "MAISON DE RETRAITE 59375 MARCHIENNES"
+        }
+    }
+}
+
+# Exemple 2 : OK
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "IME 59192 EMERCHICOURT"
+        }
+    }
+}
+
+# Exemple 3 : pas retrouvé (DEMECO n'apparaît nulle part dans l'index)
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "DEMECO 62249 COURCELLES LES-LENS"
+        }
+    }
+}
+
+# Exemple 4 : pas retrouvé ("DENISART" n'est pas dans l'index ; "DENIZART" l'est, mais correspond à un autre établissement)
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "DENISART JEAN PHILIPPE 59387 MARQUETTE EN-OSTREVANT"
+        }
+    }
+}
+
+# Exemple 5 : pas retrouvé
+# Idée : extraire le département du depcom au mapping, et ajouter un filtre
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "TEREOS RUE D'ERES 59122 CAMBRAI"
+        }
+    }
+}
+
+# Exemple 6
+GET /sirus_basic_mapping/_search
+{
+    "query": {
+        "match" : {
+            "description" : "YMERIS RTE WAHAGNIES 59462 PHALEMPIN"
+        }
+    }
+}

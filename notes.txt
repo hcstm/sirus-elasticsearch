@@ -1,16 +1,28 @@
-# Idée (sans doute hors champ hackathon) : update_by_query pour améliorer des données déjà indexées ?
-# Par exemple, on constitue une requête à partir d'une nouvelle entrée.
-# Cette requête permet idéalement d'identifier des documents proches dans l'index.
-# On pourrait donc modifier ces documents pour ajouter la nouvelle entrée comme
-# étant similaire.
+# TODO : ajouter analyzer phonétique
+#   https://github.com/hcapitaine/french-phonetic-analyser
+#   https://www.elastic.co/guide/en/elasticsearch/plugins/current/installation.html
+# TODO : enrichir les données pour peaufiner les requêtes (département, différents niveaux de NAF)
+
+# TODO? : fuzzy matching
+# TODO? : indexer les communes proches (pour CAMBRAI vs ESCAUDOEUVRES)
+
+
+# Idée : update_by_query pour améliorer les données indexées ?
+# Le cas d'utilisation est de capitaliser sur la reprise manuelle.
+# Lorsqu'une UL n'a pas pu être retrouvée, on procède à une identification
+# manuelle. Puis, on modifie le document ES correspondant à l'entreprise
+# ainsi identifiée, pour rajouter les informations déclarées n'ayant pas
+# permis l'identification automatique. Ainsi, si on relance le processus
+# d'identification automatique, on doit pouvoir retrouver cette UL.
+# Ne règle pas le problème, mais doit permettre de réduire progressivement
+# le nombre d'identifications manuelles.
 
 # Idée : combiner recherche sur un champ _all custom en ignorant l'ordre des mots,
 # et une recherche match_phrase ou similaire pour scorer davantage lorsque les termes
 # de la recherche se suivent dans le même ordre dans le document indexé.
-
-# Note mapping :
-#   - utiliser  ["norms": false] pour les champs ne servant qu'en filtres ou agrégats
-#   - utiliser ["index": false] pour ne pas indexer du tout certains champs (ils restent accessibles via _source)
+# ==> En fait, probablement pas utile ici. Lorsque l'identification sur la raison
+# sociale échoue, c'est probablement parce que l'enquêté a utilisé des informations
+# qui ne figurent pas dans la source interrogée (eg pour Sirus : DEMECO, DENISART, etc)
 
 # Similarité : depuis peu, Elasticsearch est passé de TF/IDF à BM25.
 #   - Présentation des écarts : https://www.elastic.co/fr/elasticon/conf/2016/sf/improved-text-scoring-with-bm25
