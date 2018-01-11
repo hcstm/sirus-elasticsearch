@@ -1,4 +1,4 @@
-# Création d'un index "sirus_basic_mapping", qui ne rajoute à "sirus_naive"
+﻿# Création d'un index "sirus_basic_mapping", qui ne rajoute à "sirus_naive"
 # qu'un simple mapping pour les champs. L'étape suivante serait d'expérimenter
 # avec les analyzers, après avoir fait des tests avec quelques requêtes d'ES.
 # L'analyzer "french" défini ici correspond à celui par défaut d'ES. Autrement
@@ -14,7 +14,7 @@
 #   - On utilise l'option "copy_to" pour créer des variables artificielles comme concaténation de plusieurs variables de base. 
 #   Mais ce procédé ne permet pas de choisir l'ordre dans lequel les variables d'origine sont copiées, et n'est donc pas adapté à du phrase matching
 #  (ie quand on s'intéresse à l'ordre des mots). Pour cela, on peut utiliser éventuellement un script, eg : https://stackoverflow.com/questions/29534337/how-to-specify-elasticsearch-copy-to-order
-PUT /sirus_naive?pretty
+PUT /sirus_basic_mapping?pretty
 {
   "settings": {
     "analysis": {
