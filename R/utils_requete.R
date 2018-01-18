@@ -4,13 +4,13 @@ first_siret_desc <- function(requete, loc,
   if (requete %in% c("", " ")) {
     desc <- ""
   } else {
-    desc <- paste0("description:", requete)
+    desc <- paste0("description:", "'", requete, "'")
   }
   
   if (loc %in% c("", " ")) {
     local <- ""
   } else {
-    local <- paste0("localisation:", loc)
+    local <- paste0("localisation:", "'", loc, "'")
   }
   
   if (desc == "") {
