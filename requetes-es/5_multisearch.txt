@@ -1,0 +1,10 @@
+# Exemple de syntaxe pour utiliser l'API "multi search", pour minimiser
+# les échanges par HTTP en groupant plusieurs interrogations par requête HTTP.
+# REF : https://stackoverflow.com/a/45439897
+
+# Exemple 1 : OK
+GET /sirus_ngrammes/_search
+
+{"query":{"bool":{"should":[{"match":{"description":{"query":"MAISON DE RETRAITE"}}},{"match":{"localisation":{"query":"59375 MARCHIENNES"}}},{"prefix":{"apet":"87"}}],"minimum_should_match":1}}}
+
+{"query":{"bool":{"should":[{"match":{"description":{"query":"IME"}}},{"match":{"localisation":{"query":"59192 EMERCHICOURT"}}},{"prefix":{"apet":"87"}}],"minimum_should_match":1}}}
