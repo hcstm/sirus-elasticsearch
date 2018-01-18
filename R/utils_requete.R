@@ -85,7 +85,10 @@ first_siret_desc <- function(requete, loc,
     loc = loc,
     rang = 1:taille_requete,
     score = score,
-    df,
+    as.list(df),
     stringsAsFactors = FALSE
   )
 }
+
+
+jsonlite::toJSON(result = )
