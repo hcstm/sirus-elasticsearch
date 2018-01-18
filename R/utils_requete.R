@@ -42,6 +42,29 @@ first_siret_desc <- function(requete, loc,
                 source = paste0(liste_char, collapse = ","),
                 size = taille_requete)
   
+  long_res <- length(res$hits$hits)
+  
+  if (long_res == 0) {
+    rang <- 0
+    score <- NA
+    df <- sapply(liste_char, function(x) "", USE.NAMES = TRUE)
+    return(
+      data.frame(
+        requete = requete,
+        loc = loc,
+        rang = rang,
+        score = score,
+        as.list(df),
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+  
+  if (long_res < taille_requete) {
+    taille_requete <- long_res
+  } else {
+  }
+  
   retour_var_char <- function(x, nom_variable) {
     retour <- res$hits$hits[[x]]$`_source`[[nom_variable]]
     if (is.null(retour))
