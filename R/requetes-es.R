@@ -1,5 +1,5 @@
 library(elastic)
-# TEST
+connect(es_host = "elastic-bguq8j.hackathon.insee.eu", es_port = 80)
 connect()
 
 cat_()
@@ -25,4 +25,6 @@ Search(index = 'sirus_basic_mapping', type = 'doc')$hits$total
 
 Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:MAISON DE RETRAITE 59375 MARCHIENNES')$hits$total
 
-t <- Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:MAISON DE RETRAITE 59375 MARCHIENNES', size =2, sort = '_score')
+t <- Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:MAISON DE RETRAITE 59375 MARCHIENNES', size =1, sort = '_score')
+
+
