@@ -16,7 +16,7 @@ first_siret_desc <- function(requete, loc,
   if (desc == "") {
     q <- local
   } else {
-    q <- paste0(desc, if (local != "") "&", local)
+    q <- paste0(desc, if (local != "") " & ", local)
   }
   
   if (q == "") {
