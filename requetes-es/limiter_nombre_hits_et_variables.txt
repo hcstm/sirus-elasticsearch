@@ -1,3 +1,6 @@
+# REF :
+# https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-request-source-filtering.html
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-from-size.html
 GET /sirus_basic_mapping/_search
 {
   "from" : 0, "size" : 5,

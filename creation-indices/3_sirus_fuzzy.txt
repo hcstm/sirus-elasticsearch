@@ -1,0 +1,187 @@
+﻿# Création d'un index "sirus_fuzzy", basé sur "basic_sirus_mapping".
+# Copie les variables d'intérêt dans deux meta-champs "description"
+# et "localisation". Ces champs sont ensuite indexés de trois manières
+# différentes, pour permettre plus de latitudes dans la constitution
+# des requêtes. En prenant pour exemple "description", les champs indexés
+# sont :
+# description             ==> analyse textuelle basique, dérivée de sirus_basic_mapping
+# description.phonetique  ==> création de phonèmes (algorithme beider morse)
+# description.ngrammes    ==> création de edge_n_grammes
+# En outre, les champs constituant le meta-champ "description" sont indexés isolément
+# sans analyse (pas ceux de "localisation" en revanche).
+
+
+
+
+# Notes mapping :
+#   - Utiliser  ["norms": false] pour les champs ne servant qu'en filtres ou agrégats
+#   - Utiliser ["index": false] pour ne pas indexer du tout certains champs (ils restent accessibles via _source) ;
+#     permet d'accélérer le chargement et réduit la taille de l'index.
+#   - On utilise l'option "copy_to" pour créer des variables artificielles comme concaténation de plusieurs variables de base. 
+#   Mais ce procédé ne permet pas de choisir l'ordre dans lequel les variables d'origine sont copiées, et n'est donc pas adapté à du phrase matching
+#  (ie quand on s'intéresse à l'ordre des mots). Pour cela, on peut utiliser éventuellement un script, eg : https://stackoverflow.com/questions/29534337/how-to-specify-elasticsearch-copy-to-order
+PUT /sirus_fuzzy?pretty
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "beider_morse": { 
+          "type":    "phonetic",
+          "encoder": "beidermorse"
+        },
+        "n_grammes" : {
+          "type" : "edgeNGram",
+          "min_gram": 3,
+          "max_gram": 15
+        },
+        "french_stemmer" : {
+          "type" : "stemmer",
+          "name" : "light_french"
+        },
+        "french_elision": {
+          "type":         "elision",
+          "articles_case": true,
+          "articles": [
+              "l", "m", "t", "qu", "n", "s",
+              "j", "d", "c", "jusqu", "quoiqu",
+              "lorsqu", "puisqu"
+            ]
+        },
+        "french_stop": {
+          "type":       "stop",
+          "stopwords":  "_french_"
+        }
+      },
+      "analyzer": {
+        "french_basic": {
+          "tokenizer":  "standard",
+          "filter": [
+            "french_elision",
+            "french_stop",
+            "french_stemmer",
+            "lowercase",
+            "asciifolding"
+          ]
+        },
+        "french_n_grammes": {
+          "tokenizer":  "standard",
+          "filter": [
+            "french_elision",
+            "french_stop",
+            "french_stemmer",
+            "lowercase",
+            "asciifolding",
+            "n_grammes"
+          ]
+        },
+        "french_phonetisation": {
+          "tokenizer":  "standard",
+          "filter": [
+            "french_elision",
+            "french_stop",
+            "lowercase",
+            "beider_morse"
+          ]
+        }
+      }
+    }
+  },
+  "mappings" : {
+       "doc" : {
+           "properties" : {
+             "description" : { 
+                "type" : "text", "analyzer" : "french_basic", "norms" : false,
+                "fields": {
+                  "raw": { "type" : "keyword" },
+                  "phonetique": { "type" : "text", "analyzer" : "french_phonetisation", "norms" : false },
+                  "ngrammes": { "type" : "text", "analyzer" : "french_n_grammes", "norms" : false }
+                }
+             },
+             "localisation" : { 
+                "type" : "text", "analyzer" : "french_basic", "norms" : false,
+                "fields": {
+                  "raw": { "type" : "keyword" },
+                  "phonetique": { "type" : "text", "analyzer" : "french_phonetisation", "norms" : false },
+                  "ngrammes": { "type" : "text", "analyzer" : "french_n_grammes", "norms" : false }
+                }
+             },
+             "sirus_id" : { "type" : "keyword", "index" : false },
+             "nic" : { "type" : "keyword", "index" : false },
+             "ape" : { "type" : "keyword" },
+             "creat_daaaammjj" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
+             "apet" : { "type" : "keyword" },
+             "eff_3112_et" : { "type" : "integer", "index" : false },
+             "eff_etp_et" : { "type" : "double", "index" : false },
+             "eff_et_effet_daaaammjj" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
+             "enseigne_et1" : { "type" : "keyword", "copy_to" : "description"},
+             "nom_comm_et" : { "type" : "keyword", "copy_to" : "description" },
+             "adr_et_loc_geo" : { "type" : "keyword" },
+             "adr_et_compl" : { "type" : "text", "index" : false },
+             "adr_et_voie_num" : { "type" : "keyword" },
+             "adr_et_voie_repet" : { "type" : "keyword", "index" : false },
+             "adr_et_voie_type" : { "type" : "text", "index" : false },
+             "adr_et_voie_lib" : { "type" : "keyword" },
+             "adr_et_cedex" : { "type" : "keyword", "index" : false },
+             "adr_et_distsp" : { "type" : "text", "index" : false },
+             "sir_adr_et_com_lib" : { "type" : "text", "index" : false },
+             "adr_et_post" : { "type" : "keyword" },
+             "adr_et_l1" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l2" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l3" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l4" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l5" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l6" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "adr_et_l7" : { "type" : "text", "copy_to" : "localisation", "index" : false },
+             "nic_siege" : { "type" : "keyword", "index" : false },
+             "unite_type" : { "type" : "keyword", "index" : false },
+             "region" : { "type" : "keyword", "index" : false },
+             "adr_depcom" : { "type" : "keyword" },
+             "region_impl" : { "type" : "keyword", "index" : false },
+             "region_mult" : { "type" : "keyword", "index" : false },
+             "tr_eff_etp" : { "type" : "keyword", "index" : false },
+             "cj" : { "type" : "keyword", "index" : false },
+             "denom" : { "type" : "keyword", "copy_to" : "description" },
+             "denom_condense" : { "type" : "keyword", "copy_to" : "description" },
+             "sigle" : { "type" : "keyword", "copy_to" : "description" },
+             "enseigne" : { "type" : "keyword", "copy_to" : "description" },
+             "eff_3112_uniteLegale" : { "type" : "integer", "index" : false },
+             "eff_etp_uniteLegale" : { "type" : "double", "index" : false },
+             "eff_effet_daaaammjj_uniteLegale" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
+             "x" : { "type" : "double" },
+             "y" : { "type" : "double" },
+             "SourceXYW" : { "type" : "double" },
+             "qual" : { "type" : "keyword" }
+           }
+       }
+   }
+}
+
+
+# On désactive également les replicas et le rafraîchissement de l'index afin
+# d'intégrer plus rapidement des données en masse.
+# REF : https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html
+# Liste des options d'index : https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html
+PUT /sirus_fuzzy/_settings
+{
+    "index" : {  
+      "number_of_replicas": 0,
+      "refresh_interval" : "-1"
+    }
+}
+
+# On désactive également le processus de reroutage des shards mis en oeuvre
+# par ES lorsqu'il détecte qu'un node n'a plus beaucoup d'espace disque.
+# REF : https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-update-settings.html
+PUT /_cluster/settings
+{
+    "persistent" : {
+        "cluster.routing.allocation.disk.threshold_enabled" : false
+    }
+}
+
+# Pour suivre le chargement (ie compter les documents indexés), on peut exécuter
+# périodiquement cette requête.
+GET /_cat/indices?v
+
+# Avec description unique : 8526180 documents, 3.4 Go
+# Avec description+localisation : 8527605 documents, 3.5 Go
