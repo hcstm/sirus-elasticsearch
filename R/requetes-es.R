@@ -7,6 +7,17 @@ req <- c("RONAN ETS", "CARMINA BURANA")
 loc <- c("AGEN", "PARIS")
 res <- purrr::map2_dfr(req, loc, first_siret_desc)
 
+req <- str_c(str_replace_na(table_rp$RS_X,replacement=""),
+      str_replace_na(table_rp$ACTET_X,replacement=""),sep = " ")
+
+loc  <- str_c(str_replace_na(table_rp$commune,replacement=""),
+        str_replace_na(table_rp$NOMVOI_X,replacement=""),sep = " ")
+
+res2 <- purrr::map2_dfr(req, loc, first_siret_desc)
+
+table = str_c(req,loc)
+table[table==""| table==" "]
+
 # connect()
 
 # Quelques interrogations pour voir les index présents sur le serveur ES
