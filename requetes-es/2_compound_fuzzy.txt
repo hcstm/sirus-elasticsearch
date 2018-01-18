@@ -1,0 +1,31 @@
+# Ajout d'un paramètre "fuzziness" pour gérer des écarts orthographique.
+# Le nombre d'écart toléré par défaut (valeur "AUTO") dépend de la longueur
+# du champ : https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness
+
+# Exemple 1 : OK
+GET /sirus_basic_mapping/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+            "match" : {
+                "description" : {
+                    "query" : "MAISON DE RETRAITE",
+                    "fuzziness" : "AUTO"
+                }
+            }
+        },
+        {
+            "match" : {
+                "localisation" : {
+                    "query" : "59375 MARCHIENNES",
+                    "fuzziness" : "AUTO"
+                }
+            }
+        }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
