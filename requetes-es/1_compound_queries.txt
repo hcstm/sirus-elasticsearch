@@ -1,4 +1,4 @@
-# Requêtes pour basées sur la bool query d'Elasticsearch, permettant d'utiliser plusieurs
+# Requêtes basées sur la bool query d'Elasticsearch, permettant d'utiliser plusieurs
 # sous requêtes, et donc de séparer les variables à exploiter.
 
 # Exemple 1 : OK
