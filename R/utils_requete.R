@@ -78,6 +78,9 @@ first_siret_desc <- function(requete, loc,
   
   df <- sapply(liste_char, retour_var, USE.NAMES = TRUE)
   
+  if (is.null(nrow(df)))
+    df <- as.list(df)
+  
   score <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_score`, FUN.VALUE = numeric(1))
 
   data.frame(
@@ -85,10 +88,9 @@ first_siret_desc <- function(requete, loc,
     loc = loc,
     rang = 1:taille_requete,
     score = score,
-    as.list(df),
+    df,
     stringsAsFactors = FALSE
   )
 }
 
 
-jsonlite::toJSON(result = )
