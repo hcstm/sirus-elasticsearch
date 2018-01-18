@@ -1,0 +1,46 @@
+# Déplacement de la tolérance aux fautes sur les champs unitaires
+# plutôt que sur les champs composites, avec un score moindre.
+
+# Exemple 1 : OK
+GET /sirus_ngrammes/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+            "match" : {
+                "description" : {
+                    "query" : "MAISON DE RETRAITE",
+                    "boost" : 10.0
+                }
+            }
+        },
+        {
+            "match" : {
+                "localisation" : {
+                    "query" : "59375 MARCHIENNES",
+                    "boost" : 10.0
+                }
+            }
+        },
+        { "prefix" : { "apet" : "87" } },
+        {
+            "fuzzy" : {
+                "denom" : {
+                    "value" : "MAISON DE RETRAITE"
+                }
+            }
+        },
+        {
+            "fuzzy" : {
+                "adr_et_loc_geo" : {
+                    "value" : "59375 MARCHIENNES"
+                }
+            }
+        }
+
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}

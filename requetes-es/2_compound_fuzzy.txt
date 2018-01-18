@@ -2,6 +2,9 @@
 # Le nombre d'écart toléré par défaut (valeur "AUTO") dépend de la longueur
 # du champ : https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness
 
+# ==> A priori, donne de mauvais résultats sur les champs composites. Voir à utiliser d'autres
+# queries "fuzzy" utilisant les termes pris isolément voir si le résultat est meilleur.
+
 # Exemple 1 : OK
 GET /sirus_basic_mapping/_search
 {
