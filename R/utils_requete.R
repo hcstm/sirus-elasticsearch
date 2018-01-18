@@ -1,12 +1,29 @@
 first_siret_desc <- function(requete, loc,
                              liste_char = c("sirus_id", "nic", "apet", "cj", "tr_eff_etp", "denom", "adr_et_l4", "adr_et_l5", "adr_depcom"), 
                              taille_requete = 5) {
-  q <- paste0("description:", requete, "& localisation:", loc)
+  if (requete %in% c("", " ")) {
+    desc <- ""
+  } else {
+    desc <- paste0("description:", requete)
+  }
+  
+  if (loc %in% c("", " ")) {
+    local <- ""
+  } else {
+    local <- paste0("localisation:", loc)
+  }
+  
+  if (desc == "") {
+    q <- local
+  } else {
+    q <- paste0(desc, if (local != "") "&", local)
+  }
+  
+  #q <- paste0("description:", requete, "& localisation:", loc)
   res <- Search(index = 'sirus_basic_mapping', 
                 type = 'doc', 
                 q = q, 
                 source = paste0(liste_char, collapse = ","),
-                #source = "sirus_id,nic,apet,cj,tr_eff_etp,denom,adr_et_l4,adr_et_l5,adr_depcom", 
                 size = taille_requete)
   
   retour_var_char <- function(x, nom_variable) {
