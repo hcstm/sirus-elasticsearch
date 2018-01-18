@@ -58,6 +58,7 @@ PUT /sirus_basic_mapping?pretty
              "sirus_id" : { "type" : "keyword", "index" : false },
              "nic" : { "type" : "keyword", "index" : false },
              "ape" : { "type" : "keyword", "index" : false },
+             "creat_daaaammjj" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
              "apet" : { "type" : "keyword", "index" : false },
              "eff_3112_et" : { "type" : "integer", "index" : false },
              "eff_etp_et" : { "type" : "double", "index" : false },
@@ -95,7 +96,11 @@ PUT /sirus_basic_mapping?pretty
              "enseigne" : { "type" : "text", "copy_to" : "description" },
              "eff_3112_uniteLegale" : { "type" : "integer", "index" : false },
              "eff_etp_uniteLegale" : { "type" : "double", "index" : false },
-             "eff_effet_daaaammjj_uniteLegale" : { "type" : "date", "format": "yyyyMMdd", "index" : false }
+             "eff_effet_daaaammjj_uniteLegale" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
+             "x" : { "type" : "double" },
+             "y" : { "type" : "double" },
+             "SourceXYW" : { "type" : "double" },
+             "qual" : { "type" : "keyword" }
            }
        }
    }

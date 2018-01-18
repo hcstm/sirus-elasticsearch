@@ -1,0 +1,15 @@
+GET /sirus_basic_mapping/_search
+{
+  "from" : 0, "size" : 5,
+  "_source": [ "sirus_id", "nic", "apet", "tr_eff_etp", "cj" ],
+  "query": {
+    "bool" : {
+      "should" : [
+        { "match" : { "description" : "MAISON DE RETRAIT" } },
+        { "match" : { "localisation" : "59375 MARCHIENNES" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
