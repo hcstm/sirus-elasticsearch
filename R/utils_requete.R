@@ -19,6 +19,22 @@ first_siret_desc <- function(requete, loc,
     q <- paste0(desc, if (local != "") "&", local)
   }
   
+  if (q == "") {
+    rang <- 0
+    score <- NA
+    df <- sapply(liste_char, function(x) "", USE.NAMES = TRUE)
+    return(
+      data.frame(
+        requete = requete,
+        loc = loc,
+        rang = rang,
+        score = score,
+        as.list(df),
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+  
   #q <- paste0("description:", requete, "& localisation:", loc)
   res <- Search(index = 'sirus_basic_mapping', 
                 type = 'doc', 
