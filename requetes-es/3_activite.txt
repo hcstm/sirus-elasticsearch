@@ -1,0 +1,54 @@
+# Ajout d'une requête sur la variable apet
+
+# Exemple 1 : OK
+GET /sirus_ngrammes/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+            "match" : {
+                "description" : {
+                    "query" : "MAISON DE RETRAITE"
+                }
+            }
+        },
+        {
+            "match" : {
+                "localisation" : {
+                    "query" : "59375 MARCHIENNES"
+                }
+            }
+        },
+        { "prefix" : { "apet" : "87" } }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
+
+GET /sirus_ngrammes/_search
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+            "match" : {
+                "description" : {
+                    "query" : "IME"
+                }
+            }
+        },
+        {
+            "match" : {
+                "localisation" : {
+                    "query" : "59192 EMERCHICOURT"
+                }
+            }
+        },
+        { "prefix" : { "apet" : "87" } }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
