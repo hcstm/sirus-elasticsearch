@@ -1,3 +1,4 @@
 .sincedb*
 .Rproj.user
 .Rhistory
+*.csv
