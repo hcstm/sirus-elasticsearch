@@ -1,27 +1,35 @@
-first_siret_desc <- function(desc, taille_requete = 5) {
-  q <- paste0("description:", desc)
+first_siret_desc <- function(requete, loc,
+                             liste_char = c("sirus_id", "nic", "apet", "cj", "tr_eff_etp", "denom", "adr_et_l4", "adr_et_l5", "adr_depcom"), 
+                             taille_requete = 5) {
+  q <- paste0("description:", requete, "& localisation:", loc)
   res <- Search(index = 'sirus_basic_mapping', 
                 type = 'doc', 
                 q = q, 
-                source = "sirus_id,nic,apet,cj,tr_eff_etp", 
+                source = paste0(liste_char, collapse = ","),
+                #source = "sirus_id,nic,apet,cj,tr_eff_etp,denom,adr_et_l4,adr_et_l5,adr_depcom", 
                 size = taille_requete)
   
+  retour_var_char <- function(x, nom_variable) {
+    retour <- res$hits$hits[[x]]$`_source`[[nom_variable]]
+    if (is.null(retour))
+      retour <- NA_character_
+    retour
+  }
+  
+  retour_var <- function(nom_variable) {
+    vapply(1:taille_requete, function(x) retour_var_char(x, nom_variable), FUN.VALUE = character(1))
+  }
+  
+  df <- sapply(liste_char, retour_var, USE.NAMES = TRUE)
+  
   score <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_score`, FUN.VALUE = numeric(1))
-  sirus_id <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_source`$sirus_id, FUN.VALUE = character(1))
-  nic <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_source`$nic, FUN.VALUE = character(1))
-  siret <- paste0(sirus_id, nic)
-  apet <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_source`$apet, FUN.VALUE = character(1))
-  cj <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_source`$cj, FUN.VALUE = character(1))
-  tr_eff_etp <- vapply(1:taille_requete, function(x) res$hits$hits[[x]]$`_source`$tr_eff_etp, FUN.VALUE = character(1))
-  #score <- res$hits$hits[[1]]$`_score`
-  #sirus_id <- res$hits$hits[[1]]$`_source`$sirus_id
-  #nic <- res$hits$hits[[1]]$`_source`$nic
+
   data.frame(
-    siret = siret,
+    requete = requete,
+    loc = loc,
+    rang = 1:taille_requete,
     score = score,
-    apet = apet,
-    cj = cj,
-    tr_eff_etp = tr_eff_etp,
+    df,
     stringsAsFactors = FALSE
-    )
+  )
 }
