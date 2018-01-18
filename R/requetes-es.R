@@ -28,5 +28,15 @@ Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:MAISON DE RE
 
 t <- Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:MAISON DE RETRAITE 59375 MARCHIENNES', size =10, sort = '_score')
 
-Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:ROSTAN GAP 05061')
+rostan <- Search(index = 'sirus_basic_mapping', type = 'doc', q= 'description:ROSTAN GAP 05061')
+rostan$hits$hits[[1]]$`_source`$sirus_id
 
+siret_desc <- function(desc) {
+  q <- paste0("description:", desc)
+  res <- Search(index = 'sirus_basic_mapping', type = 'doc', q = q)
+  sirus_id <- res$hits$hits[[1]]$`_source`$sirus_id
+  nic <- res$hits$hits[[1]]$`_source`$nic
+  paste(sirus_id, nic)
+}
+
+siret_desc("ROSTAN GAP 05061")
