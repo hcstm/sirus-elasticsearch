@@ -49,9 +49,9 @@ write.csv2( result,file = "/Volumes/NO NAME/First_result/result.csv")
 
 # Exemple :
 source('./R/multisearch.R')
-connect()
+#connect()
 #connect(es_host = "elastic-bguq8j.hackathon.insee.eu", es_port = 80)
-#connect(es_host = "elastic-pl.hackathon.insee.eu", es_port = 80)
+connect(es_host = "elastic-pl.hackathon.insee.eu", es_port = 80)
 
 # On déclare l'index sur lequel on veut travailler et on indique le chemin du template
 requete_simple <- ms_factory(index = 'sirus_basic_mapping', 
@@ -99,10 +99,24 @@ rp2014 <- data.table::fread(
 requete_simple <- ms_factory(index = 'sirus_basic_mapping', 
                              template_file = './R/requete_simple.template.txt')
 
-body <- requete_simple$make_body(description = rp2014$RS_X,
-                                 localisation = rp2014$CLT_X)
+body <- requete_simple$make_body(description = rp2014$RS_X[1:1000],
+                                 localisation = rp2014$CLT_X[1:1000])
 
 # On a un problème de temps d'exécution, même en local sur le rp 2014 (je pense qu'ES ne doit pas faire plus de 10 requêtes/seconde)
-#res <- multi_search(body)
+res <- multi_search(body)
+
+st <- res$responses$status
 
 
+
+# Index : basic_mapping ---------------------------------------------------
+# Boost communes
+source('./R/multisearch.R')
+
+connect(es_host = "elastic-bguq8j.hackathon.insee.eu", es_port = 80)
+requete_simple_restreinte <- ms_factory(index = 'sirus_basic_mapping', 
+                             template_file = './R/requete_simple_restreinte.template.txt')
+
+body <- requete_simple_restreinte$make_body(description = stringr::str_c(rp2014$ACTET_X, rp2014$RS_X),
+                                            sir_adr_et_com_lib = "",
+                                            localisation = "")
