@@ -8,6 +8,14 @@
             "match" : {
                 "description" : {
                     "query" : "<<description>>",
+                    "boost" : 5.0
+                }
+            }
+        },
+        {
+            "match" : {
+                "sir_adr_et_com_lib" : {
+                    "query" : "<<sir_adr_et_com_lib>>",
                     "boost" : 10.0
                 }
             }
@@ -16,7 +24,7 @@
             "match" : {
                 "localisation" : {
                     "query" : "<<localisation>>",
-                    "boost" : 10.0
+                    "boost" : 5.0
                 }
             }
         }
