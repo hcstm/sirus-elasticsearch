@@ -1,0 +1,80 @@
+---
+title: "sir👓gle"
+subtitle: "[le google de SIRUS...]"
+author: ""
+date: "2018/01/19"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+---
+
+![](logo.jpg)
+
+---
+
+# Principe
+
+
+Exploiter la technologie moteur de recherche (`elasticsearch`)
+
+
+---
+
+# Constituer un moteur de recherche
+
+- Alimentation avec les données `SIRUS`
+- Champ composite : concaténation de certaines variables `SIRUS`
+- Paramétrage d'indexation des données
+- Traitements : 
+    * Suppression des élisions
+    * Suppression des mots creux
+    * Lemmatisation
+    * M-grammes
+
+---
+
+# Interroger le moteur de recherche
+
+- Choix des variables `SIRUS` et `RP` à utiliser
+- Type de requête :
+    * Tolérance aux fautes
+    * Recherche de préfixes
+    * Recherche du terme exact
+
+---
+
+# Choisir le SIRET
+
+- Meilleur score `elasticsearch`
+
+---
+
+# Avantages du processus
+
+- Opérationnel de suite
+- Adaptabilité aisée
+
+---
+
+# Améliorations
+
+- Etape 1 : traitements supplémentaires
+    * Phonétisation
+    * Synonymes
+    * ...
+- Etape 2 : exploiter l'ordre des mots, la géographie
+- Etape 3 : construire un score fonctionnel avec nos compétences métiers
+
+
+
