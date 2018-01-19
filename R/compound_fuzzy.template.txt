@@ -1,0 +1,25 @@
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+            "match" : {
+                "description" : {
+                    "query" : "<<description>>",
+                    "fuzziness" : "AUTO"
+                }
+            }
+        },
+        {
+            "match" : {
+                "localisation" : {
+                    "query" : "<<localisation>>",
+                    "fuzziness" : "AUTO"
+                }
+            }
+        }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
