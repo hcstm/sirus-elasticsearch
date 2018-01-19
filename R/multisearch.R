@@ -40,7 +40,7 @@ ms_factory <- function(index, template_file) {
   make_body <- function() {
     liste_arguments_valeur <- mget(args)
     lapply(liste_arguments_valeur, function(x) if(is.null(x)) stop("Il manque un argument."))
-    paste0(paste0(pmap_chr(liste_arguments_valeur, make_unit_body), collapse = "\n"), "\n")
+    paste0(paste0(purrr::pmap_chr(liste_arguments_valeur, make_unit_body), collapse = "\n"), "\n")
   }
   formals(make_body) <- l
 
