@@ -1,5 +1,5 @@
 # sirus-elasticsearch
-## Hackathon Champs de Sirène 2018 - Repository de l'équipe siroogle
+## Hackathon Champs de Sirène 2018 - Repository de l'équipe sir👓gle
 
 Ce repo comprend les livrables de l'équipe.
 
