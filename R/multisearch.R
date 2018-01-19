@@ -10,7 +10,7 @@ read_template <- function(file) {
 }
 
 find_var_from_template <- function(template) {
-  stringi::stri_match_all(template, regex = "(?<=<<).+?(?=>>)")[[1]]
+  unique(stringi::stri_match_all(template, regex = "(?<=<<).+?(?=>>)")[[1]])
 }
 
 
