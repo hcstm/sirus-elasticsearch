@@ -1,0 +1,24 @@
+# Déplacement de la tolérance aux fautes sur les champs unitaires
+# plutôt que sur les champs composites, avec un score moindre.
+# Utiliser une variable du RP pour interroger plusieurs champs Sirus, mais ne prendre que le meilleur score au lieu de les sommer.
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html
+
+# Note ; : le "^" permet de booster un champ par rapport à d'autres
+
+# Equivalente à la requête 6, mais avec une syntaxe différente permettant de
+# remplacer plus facilement les paramètres.
+
+# Exemple 1 : OK
+GET /sirus_basic_mapping/_search/template
+{
+    "source" : {
+      "query":{"bool":{"should":[{"multi_match":{"query":"{{localisation}}","type":"best_fields","fields":["localisation","sir_adr_et_com_lib^10","adr_et_l6^10","adr_et_voie_lib^10","adr_et_l4^10"],"boost":4}},{"multi_match":{"query":"{{description}}","type":"best_fields","fields":["description","enseigne^10","denom^10","denom_condense^10","enseigne_et1^10","nom_comm_et^10","adr_et_l1^10","adr_et_l2^10"],"boost":4}},{"prefix":{"apet":{"value":"{{apet}}","boost":2.0}}},{"prefix":{"adr_et_loc_geo":{"value":"{{departement}}","boost":8.0}}},{"fuzzy":{"denom":{"value":"{{description}}","prefix_length":4,"boost":2.0}}},{"fuzzy":{"adr_et_loc_geo":{"value":"{{localisation}}","prefix_length":5,"boost":2.0}}}],"minimum_should_match":1}}
+    },
+    "params" : {
+        "localisation" : "59375 MARCHIENNES",
+        "description" : "MAISON DE RETRAITE",
+        "apet" : "8710A",
+        "departement" : "59"
+    }
+}

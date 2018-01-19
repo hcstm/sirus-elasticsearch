@@ -32,3 +32,8 @@
 
 # Article sur la recherche dans des champs "courts" (comme un titre, mais s'applique également pour nous)
 # http://opensourceconnections.com/blog/2014/12/08/title-search-when-relevancy-is-only-skin-deep/
+
+
+# URL Ubuntu Desktop : http://ubuntu-elastique.hackathon.insee.eu/vnc.html?autoconnect=1&autoscale=0&quality=3
+
+Port 3e serveur ES : 10.90.140.60:12370

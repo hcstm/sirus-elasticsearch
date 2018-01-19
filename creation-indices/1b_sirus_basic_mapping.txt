@@ -5,8 +5,8 @@
 # dit, il n'était pas utile de le définir, mais cela permet de visualiser les
 # opérations effectuées à l'indexation.
 
-# REMPLACE PAR LA VERSION "b"
-
+# Version b : rajoute quelques champs non indexés dans la version initiale,
+# en vue d'utiliser une requête de type multi_match/best_fields.
 
 # Notes mapping :
 #   - Utiliser  ["norms": false] pour les champs ne servant qu'en filtres ou agrégats
@@ -43,9 +43,9 @@ PUT /sirus_basic_mapping?pretty
           "tokenizer":  "standard",
           "filter": [
             "french_elision",
-            "lowercase",
             "french_stop",
-            "french_stemmer"
+            "french_stemmer",
+            "lowercase"
           ]
         }
       }
@@ -58,9 +58,9 @@ PUT /sirus_basic_mapping?pretty
              "localisation" : { "type" : "text", "analyzer" : "french", "norms" : false },
              "sirus_id" : { "type" : "keyword", "index" : false },
              "nic" : { "type" : "keyword", "index" : false },
-             "ape" : { "type" : "keyword", "index" : false },
+             "ape" : { "type" : "keyword" },
              "creat_daaaammjj" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
-             "apet" : { "type" : "keyword", "index" : false },
+             "apet" : { "type" : "keyword" },
              "eff_3112_et" : { "type" : "integer", "index" : false },
              "eff_etp_et" : { "type" : "double", "index" : false },
              "eff_et_effet_daaaammjj" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
@@ -86,11 +86,11 @@ PUT /sirus_basic_mapping?pretty
              "nic_siege" : { "type" : "keyword", "index" : false },
              "unite_type" : { "type" : "keyword", "index" : false },
              "region" : { "type" : "keyword", "index" : false },
-             "adr_depcom" : { "type" : "keyword", "index" : false },
+             "adr_depcom" : { "type" : "keyword" },
              "region_impl" : { "type" : "keyword", "index" : false },
              "region_mult" : { "type" : "keyword", "index" : false },
-             "tr_eff_etp" : { "type" : "keyword", "index" : false },
-             "cj" : { "type" : "keyword", "index" : false },
+             "tr_eff_etp" : { "type" : "keyword" },
+             "cj" : { "type" : "keyword" },
              "denom" : { "type" : "text", "copy_to" : "description" },
              "denom_condense" : { "type" : "text", "copy_to" : "description" },
              "sigle" : { "type" : "text", "copy_to" : "description" },
@@ -98,10 +98,10 @@ PUT /sirus_basic_mapping?pretty
              "eff_3112_uniteLegale" : { "type" : "integer", "index" : false },
              "eff_etp_uniteLegale" : { "type" : "double", "index" : false },
              "eff_effet_daaaammjj_uniteLegale" : { "type" : "date", "format": "yyyyMMdd", "index" : false },
-             "x" : { "type" : "double" },
-             "y" : { "type" : "double" },
-             "SourceXYW" : { "type" : "double" },
-             "qual" : { "type" : "keyword" }
+             "x" : { "type" : "double", "index" : false },
+             "y" : { "type" : "double", "index" : false },
+             "SourceXYW" : { "type" : "double", "index" : false },
+             "qual" : { "type" : "keyword", "index" : false }
            }
        }
    }
@@ -133,6 +133,3 @@ PUT /_cluster/settings
 # Pour suivre le chargement (ie compter les documents indexés), on peut exécuter
 # périodiquement cette requête.
 GET /_cat/indices?v
-
-# Avec description unique : 8526180 documents, 3.4 Go
-# Avec description+localisation : 8527605 documents, 3.5 Go

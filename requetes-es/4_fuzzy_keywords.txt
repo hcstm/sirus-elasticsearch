@@ -1,5 +1,8 @@
-# Déplacement de la tolérance aux fautes sur les champs unitaires
-# plutôt que sur les champs composites, avec un score moindre.
+# Après une tentative de tolérance aux fautes d'orthographe sur les champs
+# composites "description" et "localisation" ayant donné de mauvais résultats,
+# on déplace l'idée de "tolérance aux fautes" dans des requêtes dédiées, qui 
+# ne regardent que les champs "unitaires", et contribuent moins au score que
+# la requête "match" standard.
 
 # Exemple 1 : OK
 GET /sirus_ngrammes/_search

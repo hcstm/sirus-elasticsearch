@@ -1,4 +1,4 @@
-﻿# Création d'un index "sirus_ngrammes", basé sur "basic_sirus_mapping".
+﻿# Création d'un index "sirus_ngrammes", basé sur "sirus_basic_mapping".
 # Copie les variables d'intérêt dans deux meta-champs "description"
 # et "localisation". Ces champs sont ensuite indexés de deux manières
 # différentes, pour permettre plus de latitudes dans la constitution
@@ -166,6 +166,3 @@ PUT /_cluster/settings
 # Pour suivre le chargement (ie compter les documents indexés), on peut exécuter
 # périodiquement cette requête.
 GET /_cat/indices?v
-
-# Avec description unique : 8526180 documents, 3.4 Go
-# Avec description+localisation : 8527605 documents, 3.5 Go
