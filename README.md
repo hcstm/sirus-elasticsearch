@@ -24,7 +24,7 @@ Voir le répertoire `R`.
 Deux approches ont été prises :
 
 - envoyer en masse des requêtes unitaires sur l'`API` `elasticsearch` depuis `R`
-- envoyer des requêtes `multisearch` depuis `R`
+- envoyer des requêtes `multisearch` depuis `R` grâce à des *templates* de requêtes `json` `elasticsearch`
 
 ### Programmes `Java` 
 
