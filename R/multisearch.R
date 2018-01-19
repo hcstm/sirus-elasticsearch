@@ -47,3 +47,49 @@ ms_factory <- function(index, template_file) {
   list(make_body = make_body)
 }
 
+post_traitement_res <- function(res) {
+  
+  renvoie_max_score <- function(elem) {
+    nb_retour <- elem$hits$total
+    if (nb_retour == 0) {
+      return(NULL)
+    } else {
+      elem$hits$hits[[1]]$`_source`
+    }
+  }
+  
+  is_result <- function(elem) {
+    nb_retour <- elem$hits$total
+    if (nb_retour == 0) {
+      return(FALSE)
+    } else {
+      TRUE
+    }
+  }
+  
+  retour_ok <- vapply(res$responses, is_result, FUN.VALUE = logical(1))
+  
+  max_score_ou_null <- lapply(res$responses, renvoie_max_score)
+  
+  matrice_des_retours <- do.call(rbind, max_score_ou_null[retour_ok])
+  
+  d <- dim(matrice_des_retours)
+  
+  matrice_vide <- vector('character', (length(retour_ok)-d[1])*d[2])
+  
+  dim(matrice_vide) <- c(length(retour_ok)-d[1], d[2])
+  
+  colnames(matrice_vide) <- colnames(matrice_des_retours)
+  
+  indices_retours_valides <- c(1:length(retour_ok))[retour_ok]
+  
+  indices_retours_non_valides<- c(1:length(retour_ok))[!retour_ok]
+  
+  matrice_retours_valides <- data.frame(indice = indices_retours_valides, matrice_des_retours, stringsAsFactors = F)
+  
+  matrice_retours_non_valides <- data.frame(indice = indices_retours_non_valides, matrice_vide, stringsAsFactors = F)
+  
+  matrice_finale <- rbind(matrice_retours_valides, matrice_retours_non_valides)
+  
+  matrice_finale
+}
