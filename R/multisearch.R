@@ -23,7 +23,7 @@ multi_search <- function(body, asdf = TRUE) {
                    body = body)
   elastic:::geterror(tt)
   res <- elastic:::cont_utf8(tt)
-  jsonlite::fromJSON(res, asdf = asdf)
+  jsonlite::fromJSON(res, simplifyVector = asdf)
 }
 
 ms_factory <- function(index, template_file) {
