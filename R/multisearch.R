@@ -48,28 +48,27 @@ ms_factory <- function(index, template_file) {
 }
 
 post_traitement_res <- function(res) {
-  
-  renvoie_max_score <- function(elem) {
-    nb_retour <- elem$hits$total
-    if (nb_retour == 0) {
+  get_max_score_doc <- function(response) {
+    total_hits <- response$hits$total
+    if (total_hits == 0) {
       return(NULL)
     } else {
-      elem$hits$hits[[1]]$`_source`
+      response$hits$hits[[1]]$`_source`
     }
   }
   
-  is_result <- function(elem) {
-    nb_retour <- elem$hits$total
-    if (nb_retour == 0) {
+  has_result <- function(response) {
+    total_hits <- response$hits$total
+    if (total_hits == 0) {
       return(FALSE)
     } else {
       TRUE
     }
   }
   
-  retour_ok <- vapply(res$responses, is_result, FUN.VALUE = logical(1))
+  retour_ok <- vapply(res$responses, has_result, FUN.VALUE = logical(1))
   
-  max_score_ou_null <- lapply(res$responses, renvoie_max_score)
+  max_score_ou_null <- lapply(res$responses, get_max_score_doc)
   
   matrice_des_retours <- do.call(rbind, max_score_ou_null[retour_ok])
   
@@ -83,7 +82,7 @@ post_traitement_res <- function(res) {
   
   indices_retours_valides <- c(1:length(retour_ok))[retour_ok]
   
-  indices_retours_non_valides<- c(1:length(retour_ok))[!retour_ok]
+  indices_retours_non_valides <- c(1:length(retour_ok))[!retour_ok]
   
   matrice_retours_valides <- data.frame(indice = indices_retours_valides, matrice_des_retours, stringsAsFactors = F)
   
