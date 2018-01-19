@@ -14,7 +14,7 @@ find_var_from_template <- function(template) {
 }
 
 
-multi_search <- function(body) {
+multi_search <- function(body, asdf = TRUE) {
   url <- paste0(elastic:::make_url(elastic:::es_get_auth()), "/_msearch")
   tt <- httr::POST(url, 
                    elastic:::make_up(), 
@@ -23,7 +23,7 @@ multi_search <- function(body) {
                    body = body)
   elastic:::geterror(tt)
   res <- elastic:::cont_utf8(tt)
-  jsonlite::fromJSON(res, TRUE)
+  jsonlite::fromJSON(res, asdf = asdf)
 }
 
 ms_factory <- function(index, template_file) {
