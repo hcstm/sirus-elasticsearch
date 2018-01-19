@@ -26,7 +26,7 @@ Deux approches ont été prises :
 - envoyer en masse des requêtes unitaires sur l'`API` `elasticsearch` depuis `R`
 - envoyer des requêtes `multisearch` depuis `R` grâce à des *templates* de requêtes `json` `elasticsearch`
 
-### PClasss `Java` 
+### Classes `Java` 
 
 Des programmes permettant de requêter l'`API` ont également été développés.
  Voir le répertoire `java`.
